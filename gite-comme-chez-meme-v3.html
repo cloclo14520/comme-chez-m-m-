@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Comme chez mémé – Gîte près du Puy du Fou</title>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600&family=Young+Serif&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eef2ee;--panel:#fbfcfb;--ink:#1f2d2a;--mute:#5b6b66;--green:#3f6b5a;--lamp:#e8a83a;--line:#d3dcd6}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 Figtree,system-ui,sans-serif}
+h1,h2{font-family:"Young Serif",Georgia,serif;font-weight:400;line-height:1.15;margin:0}
+h2{font-size:clamp(1.6rem,4vw,2.1rem);margin-bottom:.6rem}
+.btn{display:inline-block;background:var(--lamp);color:#2a1d05;font-weight:600;padding:.7rem 1.3rem;border-radius:999px;text-decoration:none}
+button:focus-visible,.btn:focus-visible{outline:3px solid var(--green);outline-offset:2px}
+header{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;padding:1.2rem 1.4rem;background:var(--panel);border-bottom:1px solid var(--line)}
+header h1{font-size:clamp(1.8rem,5vw,2.6rem)}
+header p{margin:.2rem 0 0;color:var(--mute)}
+#gal{background:#141c1a}
+#view{position:relative;height:min(74vh,720px);min-height:340px}
+#view img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:0;transition:opacity .5s}
+#view img.on{opacity:1}
+.arrow{position:absolute;top:50%;margin-top:-24px;width:48px;height:48px;border-radius:50%;border:0;background:rgba(255,255,255,.88);font-size:1.5rem;cursor:pointer}
+.arrow.l{left:.8rem}.arrow.r{right:.8rem}
+.bottom{display:flex;align-items:center;gap:.8rem;padding:.7rem .8rem;color:#dfe8e4}
+.thumbs{display:flex;gap:.5rem;overflow-x:auto;flex:1}
+.thumbs button{flex:0 0 auto;width:88px;height:60px;padding:0;border:2px solid transparent;border-radius:8px;overflow:hidden;cursor:pointer;background:#000;opacity:.65}
+.thumbs button[aria-current="true"]{border-color:var(--lamp);opacity:1}
+.thumbs img{width:100%;height:100%;object-fit:cover;display:block}
+#count{white-space:nowrap;font-size:.9rem}
+section{max-width:1000px;margin:0 auto;padding:3.2rem 1.2rem 0}
+.lead{color:var(--mute);margin:0 0 1rem}
+#map{position:relative;height:min(70vh,620px);min-height:380px;border-radius:18px;overflow:hidden;background:#bfd9e6;touch-action:pan-y;cursor:grab}
+#map canvas{display:block;width:100%;height:100%}
+.lab{position:absolute;transform:translate(-50%,-100%);background:var(--panel);color:var(--ink);font-size:.85rem;font-weight:600;padding:.2rem .7rem;border-radius:999px;white-space:nowrap;pointer-events:none}
+.ctl{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.8rem}
+.chip{border:1px solid var(--line);background:var(--panel);color:var(--ink);font:inherit;font-size:.92rem;padding:.4rem .9rem;border-radius:999px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--green);color:#fff;border-color:var(--green)}
+.note{font-size:.85rem;color:var(--mute);margin-top:.6rem}
+.facts{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;text-align:center}
+.facts div{background:var(--panel);border-radius:14px;padding:1rem .5rem}
+.facts strong{display:block;font:2rem "Young Serif",serif}
+.facts span{color:var(--mute);font-size:.95rem}
+.two{display:grid;grid-template-columns:1.2fr 1fr;gap:2rem}
+ul.eq{list-style:none;margin:0;padding:0;display:grid;gap:.5rem}
+ul.eq li{padding:.5rem .9rem;background:var(--panel);border-radius:10px}
+.score{display:flex;align-items:baseline;gap:.8rem}
+.score strong{font:3.2rem "Young Serif",serif}
+.score span{color:var(--mute)}
+.final{text-align:center;padding:4rem 1.2rem}
+.final p{color:var(--mute);margin:.5rem 0 1.4rem}
+footer{text-align:center;color:var(--mute);font-size:.85rem;padding:0 1rem 2.5rem}
+@media(max-width:700px){.facts{grid-template-columns:repeat(2,1fr)}.two{grid-template-columns:1fr}.arrow{display:none}}
+</style>
+</head>
+<body>
+<header>
+  <div><h1>Comme chez mémé</h1><p>Gîte de campagne pour 8 personnes, à 15 minutes du Puy du Fou</p></div>
+  <a class="btn" href="https://www.airbnb.fr/rooms/1387558441026393319" target="_blank" rel="noopener">Réserver une nuit</a>
+</header>
+
+<div id="gal">
+  <div id="view">
+    <button class="arrow l" id="prev" aria-label="Photo précédente">‹</button>
+    <button class="arrow r" id="next" aria-label="Photo suivante">›</button>
+  </div>
+  <div class="bottom"><div class="thumbs" id="thumbs"></div><div id="count"></div></div>
+</div>
+
+<section>
+  <div class="facts">
+    <div><strong>8</strong><span>voyageurs</span></div>
+    <div><strong>4</strong><span>chambres</span></div>
+    <div><strong>5</strong><span>lits</span></div>
+    <div><strong>1</strong><span>salle de bain</span></div>
+  </div>
+</section>
+
+<section>
+  <h2>Le gîte au milieu de la campagne</h2>
+  <p class="lead">Tournez autour de la maison et regardez ce qui l'entoure. Les distances des trajets sont réelles.</p>
+  <div id="map" aria-label="Vue 3D imaginée des environs du gîte"></div>
+  <div class="ctl" id="ctl"></div>
+  <p class="note">Vue imaginée pour donner une idée du secteur. L'emplacement exact des lieux et l'aspect de la maison ne sont pas fidèles.</p>
+</section>
+
+<section class="two">
+  <div>
+    <h2>La maison</h2>
+    <p>Un salon, une salle à manger et une cuisine séparée pour se retrouver le soir. Quatre chambres : trois avec un lit double, une avec deux lits simples. Dehors, une terrasse.</p>
+    <p>Draps et serviettes fournis. Une boîte à clés permet d'arriver et de repartir librement.</p>
+  </div>
+  <div>
+    <h2>Sur place</h2>
+    <ul class="eq">
+      <li>Cuisine équipée : four, micro-ondes, congélateur</li>
+      <li>Cafetière filtre et machine Senseo</li>
+      <li>Wifi et télévision</li>
+      <li>Lave-linge dans le logement</li>
+      <li>Stationnement gratuit</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <h2>Ce que disent les voyageurs</h2>
+  <div class="score"><strong>4,95</strong><span>sur 5, d'après 83 avis. Propreté 5,0 · Communication 5,0 · Arrivée 4,9 · Emplacement 4,8. Coup de cœur voyageurs sur Airbnb.</span></div>
+</section>
+
+<div class="final">
+  <h2>Une nuit suffit pour tomber sous le charme</h2>
+  <p>Hôtes : Elodie, Superhôte, et Anthony. Réponse en général dans l'heure.</p>
+  <a class="btn" href="https://www.airbnb.fr/rooms/1387558441026393319" target="_blank" rel="noopener">Voir les dates sur Airbnb</a>
+</div>
+<footer>Gîte « Comme chez mémé », La Chapelle-Largeau, Vendée</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+/* ---------- Galerie : toutes les photos de l'annonce ---------- */
+var BASE="https://a0.muscache.com/im/pictures/miso/Hosting-1387558441026393319/original/";
+var IDS=["0cf28004-c79d-4b47-9ef2-19b1464e0e28","69a234a1-8350-4a1d-891f-9a42c8219297","caf9a33b-0a65-45ca-b649-32bdaf8a2757","c4fc98b7-0f99-4e75-9e02-96111f08e8ae","13a5ee29-f662-4c2e-a69a-7a6c4a5fa23b"];
+(function(){
+  var v=document.getElementById('view'),th=document.getElementById('thumbs'),ct=document.getElementById('count'),n=0,ims=[],tb=[];
+  function u(id,w){return BASE+id+".jpeg?im_w="+w}
+  IDS.forEach(function(id,k){
+    var im=new Image();im.alt="Photo "+(k+1)+" du gîte";im.src=u(id,1440);im.onerror=function(){im.onerror=null;im.src=u(id,720)};
+    v.insertBefore(im,v.firstChild);ims[k]=im;
+    var b=document.createElement('button');b.setAttribute('aria-label','Photo '+(k+1));
+    var t=new Image();t.alt="";t.src=u(id,720);b.appendChild(t);b.onclick=function(){go(k)};th.appendChild(b);tb[k]=b;
+  });
+  function go(k){n=(k+IDS.length)%IDS.length;ims.forEach(function(m,i){m.classList.toggle('on',i===n)});tb.forEach(function(b,i){b.setAttribute('aria-current',i===n)});ct.textContent=(n+1)+" / "+IDS.length;tb[n].scrollIntoView({block:'nearest',inline:'center'})}
+  document.getElementById('prev').onclick=function(){go(n-1)};document.getElementById('next').onclick=function(){go(n+1)};
+  addEventListener('keydown',function(e){if(e.key==='ArrowLeft')go(n-1);if(e.key==='ArrowRight')go(n+1)});
+  var sx=0;v.addEventListener('touchstart',function(e){sx=e.touches[0].clientX},{passive:true});
+  v.addEventListener('touchend',function(e){var d=e.changedTouches[0].clientX-sx;if(Math.abs(d)>50)go(n+(d<0?1:-1))});
+  go(0);
+})();
+
+/* ---------- Vue 3D imaginée des environs ---------- */
+(function(){
+var T=THREE,el=document.getElementById('map');
+var R=new T.WebGLRenderer({antialias:true});R.setPixelRatio(Math.min(devicePixelRatio,2));R.shadowMap.enabled=true;el.appendChild(R.domElement);
+var S=new T.Scene(),cam=new T.PerspectiveCamera(40,1,.1,200);
+var DAY=new T.Color(0xbfd9e6),NIGHT=new T.Color(0x0f1730);S.background=DAY.clone();S.fog=new T.Fog(0xbfd9e6,45,110);
+function mat(c){return new T.MeshStandardMaterial({color:c,roughness:.9})}
+function add(g,c,x,y,z,sh){var m=new T.Mesh(g,mat(c));m.position.set(x,y,z);if(sh){m.castShadow=true}m.receiveShadow=true;S.add(m);return m}
+function box(w,h,d,c,x,y,z){return add(new T.BoxGeometry(w,h,d),c,x,y,z,true)}
+var g=add(new T.CircleGeometry(75,48),0x7fa46a,0,0,0);g.rotation.x=-Math.PI/2;
+/* champs autour */
+var cols=[0xd9c46a,0x8db86f,0x6f9a55,0xc9b45c,0xa6c47a,0x7fa46a],s=1;
+for(var i=-6;i<=6;i++)for(var j=-6;j<=6;j++){
+  var x=i*10,z=j*10;if(Math.abs(x)<14&&Math.abs(z)<14)continue;if(x*x+z*z>65*65)continue;
+  s=(s*9301+49297)%233280;var c=cols[Math.floor(s/233280*cols.length)];
+  var f=add(new T.PlaneGeometry(8.6,8.6),c,x,.02,z);f.rotation.x=-Math.PI/2;
+  for(var h=0;h<5;h++){box(2,.9,.9,0x3f7a4f,x-4.3+h*2.1,.45,z+4.4)}
+}
+/* route */
+var rd=add(new T.PlaneGeometry(3,80),0x8a8a86,0,.03,42);rd.rotation.x=-Math.PI/2;
+/* gîte */
+box(6,2.6,4,0xe9dcc3,0,1.3,0);
+var sh=new T.Shape();sh.moveTo(-2.4,0);sh.lineTo(2.4,0);sh.lineTo(0,1.7);sh.closePath();
+var rg=new T.ExtrudeGeometry(sh,{depth:6.8,bevelEnabled:false});rg.translate(0,0,-3.4);rg.rotateY(Math.PI/2);
+var rf=add(rg,0x8a4b3a,0,2.6,0,true);
+box(.5,1.3,.5,0xb0a08a,1.8,3.5,-.5);box(.9,1.7,.08,0x3f6b5a,0,.85,2.04);box(6,.12,1.6,0xb58b5f,0,.06,2.8);
+var wins=[];
+function win(x,y,z,ry){var m=new T.Mesh(new T.PlaneGeometry(.95,1.05),new T.MeshStandardMaterial({color:0x9fb8c4,emissive:0xffc46b,emissiveIntensity:0}));m.position.set(x,y,z);m.rotation.y=ry;S.add(m);wins.push(m)}
+win(-2,1.5,2.03,0);win(2,1.5,2.03,0);win(3.03,1.5,0,Math.PI/2);win(-3.03,1.5,0,-Math.PI/2);
+box(1.4,.03,12,0xc9c3b6,0,.04,8);
+function tree(x,z,k){add(new T.CylinderGeometry(.15,.2,1.2,8),0x5a3f2a,x,.6*k,z);var c=add(new T.ConeGeometry(1.1*k,3*k,10),0x2f6a42,x,2*k,z,true)}
+[[-9,-4,1.5],[-10,4,1.2],[10,-5,1.7],[11,3,1.3],[-6,-9,1.4],[6,-10,1.5],[-12,10,1.6],[12,11,1.2]].forEach(function(t){tree(t[0],t[1],t[2])});
+for(i=0;i<26;i++){var a=i*.62;tree(Math.cos(a)*(45+(i%3)*4),Math.sin(a)*(45+(i%3)*4),1.8+(i%2))}
+/* Puy du Fou (château imaginé) */
+var C={x:-30,z:-24};box(9,5,7,0xc9bfae,C.x,2.5,C.z);
+[[-4.5,-3.5],[4.5,-3.5],[-4.5,3.5],[4.5,3.5]].forEach(function(p){add(new T.CylinderGeometry(1.3,1.5,8,12),0xb9ae9a,C.x+p[0],4,C.z+p[1],true);add(new T.ConeGeometry(1.7,2.6,12),0x5a6b8a,C.x+p[0],9.3,C.z+p[1],true)});
+/* Parc oriental (pagode imaginée) */
+var P={x:36,z:-12};[[6,2],[4.6,2],[3.2,2]].forEach(function(d,k){box(d[0],d[1],d[0],0xb5533c,P.x,1+k*3.2,P.z);add(new T.ConeGeometry(d[0]*.95,1.4,4),0x2f3b3a,P.x,2.6+k*3.2,P.z,true).rotation.y=Math.PI/4});
+/* Festival de Poupet (chapiteaux imaginés) */
+var F={x:14,z:14};[[0,0],[3,1.5],[-2.5,2.5]].forEach(function(p){add(new T.CylinderGeometry(1.5,1.5,1.2,12),0xf0e8d8,F.x+p[0],.6,F.z+p[1],true);add(new T.ConeGeometry(1.8,1.6,12),0xc84b4b,F.x+p[0],2,F.z+p[1],true)});
+/* lumières */
+var hemi=new T.HemisphereLight(0xffffff,0x6f8f5f,.85);S.add(hemi);
+var sun=new T.DirectionalLight(0xfff1d6,1);sun.position.set(20,30,24);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);
+var sc=sun.shadow.camera;sc.left=-40;sc.right=40;sc.top=40;sc.bottom=-40;sc.far=100;S.add(sun);
+var lamp=new T.PointLight(0xffb25a,0,9);lamp.position.set(0,2.2,3.2);S.add(lamp);
+var sp=new Float32Array(450);for(i=0;i<450;i+=3){sp[i]=(Math.random()-.5)*160;sp[i+1]=15+Math.random()*50;sp[i+2]=(Math.random()-.5)*160}
+var sg=new T.BufferGeometry();sg.setAttribute('position',new T.BufferAttribute(sp,3));
+var stars=new T.Points(sg,new T.PointsMaterial({color:0xffffff,size:.5,transparent:true,opacity:0}));S.add(stars);
+/* étiquettes */
+var labs=[[0,5,0,'Le gîte'],[F.x,4,F.z,'Festival de Poupet · 8 min'],[C.x,12,C.z,'Puy du Fou · 15 min'],[P.x,11,P.z,'Parc oriental · 15 min']].map(function(l){var d=document.createElement('div');d.className='lab';d.textContent=l[3];el.appendChild(d);return{d:d,v:new T.Vector3(l[0],l[1],l[2])}});
+/* caméra */
+var views={tout:{th:.35,ph:.5,r:44},puy:{th:.9,ph:.3,r:26},parc:{th:-1.25,ph:.3,r:26},gite:{th:.6,ph:.18,r:13}};
+var nm={tout:'Vue d\'ensemble',puy:'Vers le Puy du Fou',parc:'Vers le parc oriental',gite:'Près du gîte'};
+var cur={th:.2,ph:.6,r:60},tgt={th:.35,ph:.5,r:44},idle=true,night=0,nt=0,still=matchMedia('(prefers-reduced-motion:reduce)').matches;
+var ctl=document.getElementById('ctl'),bs={};
+function mark(k){for(var n in bs)bs[n].setAttribute('aria-pressed',n===k)}
+function chip(t,f){var b=document.createElement('button');b.className='chip';b.textContent=t;b.setAttribute('aria-pressed','false');b.onclick=f;ctl.appendChild(b);return b}
+Object.keys(views).forEach(function(k){bs[k]=chip(nm[k],function(){var v=views[k];tgt.th=v.th+6.2832*Math.round((cur.th-v.th)/6.2832);tgt.ph=v.ph;tgt.r=v.r;idle=false;mark(k)})});
+mark('tout');
+var nb=chip('Passer à la nuit',function(){nt=nt?0:1;nb.textContent=nt?'Passer au jour':'Passer à la nuit'});
+var dr=false,lx=0,ly=0;
+el.addEventListener('pointerdown',function(e){dr=true;idle=false;lx=e.clientX;ly=e.clientY;mark('')});
+addEventListener('pointerup',function(){dr=false});
+addEventListener('pointermove',function(e){if(!dr)return;tgt.th-=(e.clientX-lx)*.007;tgt.ph=Math.max(.05,Math.min(1.35,tgt.ph+(e.clientY-ly)*.005));lx=e.clientX;ly=e.clientY});
+el.addEventListener('wheel',function(e){e.preventDefault();tgt.r=Math.max(9,Math.min(70,tgt.r+e.deltaY*.03))},{passive:false});
+function size(){var w=el.clientWidth,h=el.clientHeight;R.setSize(w,h);cam.aspect=w/h;cam.updateProjectionMatrix()}
+new ResizeObserver(size).observe(el);size();
+var c1=new T.Color(),pv=new T.Vector3();
+(function frame(){
+  requestAnimationFrame(frame);
+  if(idle&&!still)tgt.th+=.002;
+  cur.th+=(tgt.th-cur.th)*.06;cur.ph+=(tgt.ph-cur.ph)*.06;cur.r+=(tgt.r-cur.r)*.06;
+  var cx=cur.r*Math.cos(cur.ph);cam.position.set(cx*Math.sin(cur.th),cur.r*Math.sin(cur.ph)+1.5,cx*Math.cos(cur.th));cam.lookAt(0,2,0);
+  night+=(nt-night)*.05;c1.copy(DAY).lerp(NIGHT,night);S.background.copy(c1);S.fog.color.copy(c1);
+  hemi.intensity=.85-.62*night;sun.intensity=1-.85*night;lamp.intensity=1.6*night;stars.material.opacity=night;
+  wins.forEach(function(w){w.material.emissiveIntensity=1.5*night});
+  R.render(S,cam);
+  labs.forEach(function(l){pv.copy(l.v).project(cam);var ok=pv.z<1;l.d.style.display=ok?'block':'none';l.d.style.left=(pv.x*.5+.5)*el.clientWidth+'px';l.d.style.top=(-pv.y*.5+.5)*el.clientHeight+'px'});
+})();
+})();
+</script>
+</body>
+</html>
